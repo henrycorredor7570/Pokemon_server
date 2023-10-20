@@ -2,12 +2,11 @@ const axios = require("axios");
 const { Pokemon, Type, Pokemon_Type} = require("../db");
 const { infoCleanApi, infoPokeCleanApi, normalizarCoincidencia } = require("../utils/genericFunctions");
 require('dotenv').config();
-const { URL } = process.env;
 
-// Trae todos los pokemones de la base de datos y de la API unificados
+// Trae todos los pokemones de la base de datos y de la API unificados.
 const getAllPokemons = async () => {
     //INFO DE LA API:
-    const infoApi = (await axios.get(`${URL}?limit=50&offset=0`)).data.results;
+    const infoApi = (await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=50&offset=0`)).data.results;
     const pokemonsApi = await infoCleanApi(infoApi);
     //INFO DB:
     const pokemonsDB = await Pokemon.findAll({// metodo que retorna un arreglo con la info de la DB
@@ -40,7 +39,7 @@ const getAllPokemons = async () => {
 //Obtiene los detalles de un pokemon por ID:
 const getPokemonById = async (id, source) => {
     if(source === "api"){
-        const infoPoke = (await axios.get(`${URL}${id}`)).data
+        const infoPoke = (await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)).data
         const pokemon = infoPokeCleanApi(infoPoke);
         return pokemon;
     }
